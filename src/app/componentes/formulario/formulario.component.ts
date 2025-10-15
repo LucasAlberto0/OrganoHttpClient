@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, OnInit, output, SimpleChanges } from '@angular/core';
+import { Component, input, OnChanges, OnInit, output, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
@@ -28,8 +28,8 @@ import { LivroService } from '../../services/livro.service';
   templateUrl: './formulario.component.html',
   styleUrl: './formulario.component.css'
 })
-export class FormularioComponent implements OnInit {
-  
+export class FormularioComponent implements OnInit, OnChanges {
+  livro = input<Livro | null>(null);
   submitForm = output<Livro>();
 
   livroFormulario!: FormGroup;
@@ -40,10 +40,18 @@ export class FormularioComponent implements OnInit {
     private livroService: LivroService
   ) { }
 
-
   ngOnInit() {
     this.generos = this.livroService.generos; 
     this.inicializarlivroFormulario();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes['livro'] && this.livro()){
+      this.livroFormulario.patchValue({
+        ...this.livro(),
+        genero: this.livro()?.genero?.id || ""
+      })
+    }
   }
 
   inicializarlivroFormulario() {
