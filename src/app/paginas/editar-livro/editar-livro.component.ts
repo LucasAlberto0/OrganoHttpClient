@@ -33,5 +33,4 @@ export class EditarLivroComponent implements OnInit {
       this.router.navigate(['lista-livros'])
     })
   }
-
 }
