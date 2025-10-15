@@ -1,3 +1,4 @@
+import { LivroService } from './../../services/livro.service';
 import { CommonModule } from '@angular/common';
 import { Component, input } from '@angular/core';
 
@@ -17,8 +18,14 @@ export class LivroComponent {
 
   livro = input.required<Livro>();
 
+  constructor(private livroService: LivroService) {}
+
   alternarFavorito() {
-    this.livro().favorito = !this.livro().favorito;
+    const livroAtualizado = {...this.livro(), favorito: !this.livro().favorito}
+
+    this.livroService.atualizarFavorito(livroAtualizado).subscribe(() => {
+      this.livro().favorito = livroAtualizado.favorito
+    })
   }
 
 }

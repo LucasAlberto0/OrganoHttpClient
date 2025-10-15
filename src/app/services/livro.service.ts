@@ -16,7 +16,6 @@ export class LivroService {
     { id: 'tecnicos', value: 'Técnicos' }
   ];
 
-
   private API_URL = "http://localhost:3000/livros"; 
 
   constructor(private httpClient: HttpClient) { }
@@ -47,6 +46,10 @@ export class LivroService {
 
   adicionarLivro(novoLivro: Livro): Observable<Livro> {
     return this.httpClient.post<Livro>(this.API_URL, novoLivro)
+  }
+
+  atualizarFavorito(livro: Livro): Observable<Livro> {
+    return this.httpClient.patch<Livro>(`${this.API_URL}/${livro.id}`, {favorito: livro.favorito})
   }
 
 }
